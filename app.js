@@ -4,7 +4,8 @@ new Vue({
         playerHealth: 100,
         monsterHealth: 100,
         gameIsRunning: false,
-        turns: []
+        turns: [],
+        currentTurn: 0
     },
     methods: {
         startGame: function () {
@@ -18,8 +19,10 @@ new Vue({
             this.monsterHealth -= damage;
             this.turns.unshift({
                 isPlayer: true,
-                text: `Player hits Monster with ${damage} points.`
+                text: `Player hits Monster with ${damage} points.`,
+                id: this.currentTurn + 1
             });
+            this.currentTurn++;
             if (this.checkWin()) return;
 
             this.monsterAttacks();
@@ -29,8 +32,10 @@ new Vue({
             this.monsterHealth -= damage;
             this.turns.unshift({
                 isPlayer: true,
-                text: `Player hits Monster hard with ${damage} points.`
+                text: `Player hits Monster hard with ${damage} points.`,
+                id: this.currentTurn + 1
             });
+            this.currentTurn++;
             if (this.checkWin()) return;
 
             this.monsterAttacks();
@@ -43,8 +48,10 @@ new Vue({
             }
             this.turns.unshift({
                 isPlayer: true,
-                text: 'Player heals with 10 points.'
+                text: 'Player heals with 10 points.',
+                id: this.currentTurn + 1
             });
+            this.currentTurn++;
             this.monsterAttacks();
         },
         giveUp: function () {
@@ -55,9 +62,10 @@ new Vue({
             this.playerHealth -= damage;
             this.turns.unshift({
                 isPlayer: false,
-                text: `Monster hits Player with ${damage} points.`
+                text: `Monster hits Player with ${damage} points.`,
+                id: this.currentTurn + 1
             });
-
+            this.currentTurn++;
             this.checkWin();
         },
         calculateDamage: function (min, max) {
